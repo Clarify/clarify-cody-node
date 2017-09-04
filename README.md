@@ -93,6 +93,8 @@ Get the first page (most recent):
 ```
 client.getConversations((err, result) => {
 
+    // count = ClarifyCody.utils.itemCount(result);
+
     client.getLinkItem(result, 0, (err, conversation) => {
         // conversation.external_id
     });
