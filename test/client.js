@@ -25,6 +25,8 @@ describe('Clarify Cody API tests', function() {
             expect(err).to.not.be.ok();
             expect(result.total).to.equal(5);
             expect(result._links.items.length).to.equal(5);
+            expect(ClarifyCody.utils.hasLink(result, 'self')).to.be.ok();
+            expect(ClarifyCody.utils.hasLink(result, 'next')).to.not.be.ok();
             done();
         });
     });

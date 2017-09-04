@@ -1,5 +1,5 @@
 {
-  "name": "clarify-cody-node",
+  "name": "clarify-cody",
   "version": "1.0.0",
   "description": "Client library for Clarify Conversation Dynamics API Edit",
   "engines": {
