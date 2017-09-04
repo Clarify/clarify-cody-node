@@ -177,6 +177,23 @@ exports.listConversationsLimit2Page3 = {
   "limit": 2
 };
 
+exports.adminConversationsPrune = {
+  "_links": {
+    "self": {
+      "href": "/v1/admin/conversations/prune"
+    }
+  },
+  "total": 0
+};
+
+exports.adminConversationsNotify = {
+  "_links": {
+    "self": {
+      "href": "/v1/admin/conversations/notify"
+    }
+  },
+  "total": 1
+};
 
 const media_insight_template = {
   "_links": {
@@ -273,11 +290,25 @@ exports.mockServer = function(noClean) {
         return exports.media_insights[uri];
     }).persist();
 
+    Nock(baseUrl).get(/\/v1\/conversations\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/)
+        .query({embed: 'media'})
+        .reply(200, function(uri, requestBody) {
+            var path = uri.split('?')[0];
+            var conv = JSON.parse(JSON.stringify(exports.conversations[path]));
+            conv._embedded = {
+                'insight:media': exports.media_insights[path + '/insights/media']
+            };
+            return conv;
+        }).persist();
+
     Nock(baseUrl).delete(/\/v1\/conversations\/([0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12})$/).reply(204, '');
 
     Nock(baseUrl).get('/v1/conversations').query({limit:2}).reply(200, exports.listConversationsLimit2Page1);
     Nock(baseUrl).get('/v1/conversations').query({iterator:'n_4', limit:2}).reply(200, exports.listConversationsLimit2Page2);
     Nock(baseUrl).get('/v1/conversations').query({iterator:'n_2',limit:2}).reply(200, exports.listConversationsLimit2Page3);
+
+    Nock(baseUrl).post('/v1/admin/conversations/prune').reply(200, exports.adminConversationsPrune);
+    Nock(baseUrl).post('/v1/admin/conversations/notify', {notify_status:'error'}).reply(200, exports.adminConversationsNotify);
 
 };
 
