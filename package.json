@@ -1,0 +1,48 @@
+{
+  "name": "clarify-cody-node",
+  "version": "1.0.0",
+  "description": "Client library for Clarify Conversation Dynamics API Edit",
+  "engines": {
+    "node": ">=4.8.0"
+  },
+  "main": "lib/index.js",
+  "scripts": {
+    "lint": "eslint --ignore-path .gitignore lib",
+    "spec": "nyc mocha -s 10000 -t 120000",
+    "test": "npm run lint && npm run spec"
+  },
+  "files": [
+    "lib"
+  ],
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Clarify/clarify-cody-node.git"
+  },
+  "keywords": [
+    "clarify",
+    "conversation",
+    "speech",
+    "analysis"
+  ],
+  "author": "Ivo Rothschild",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/Clarify/clarify-cody-node/issues"
+  },
+  "homepage": "https://github.com/Clarify/clarify-cody-node#readme",
+  "dependencies": {
+    "request": "^2.81.0"
+  },
+  "devDependencies": {
+    "eslint": "^4.6.0",
+    "eslint-config-standard": "^10.2.1",
+    "eslint-plugin-import": "^2.7.0",
+    "eslint-plugin-node": "^5.1.1",
+    "eslint-plugin-promise": "^3.5.0",
+    "eslint-plugin-standard": "^3.0.1",
+    "expect.js": "^0.3.1",
+    "mocha": "^3.5.0",
+    "nock": "^9.0.14",
+    "nyc": "^11.1.0"
+  }
+}
