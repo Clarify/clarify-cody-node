@@ -17,6 +17,13 @@ describe('Clarify Cody API tests', function() {
 
         expect(function(){ ClarifyCody.Client();}).to.throwError();
 
+        var opts = {baseUrl: 'http://example.org',
+                    headers: { 'User-Agent': 'test' }};
+
+        var obj = new ClarifyCody.Client('foobar', opts);
+        expect(obj).to.be.an('object');
+        expect(obj.baseUrl).to.equal(opts.baseUrl);
+        expect(obj.headers['user-agent']).to.equal(opts.headers['User-Agent']); // lowecased and set properly
     });
 
     it('should list conversations', function(done) {
@@ -221,4 +228,22 @@ describe('Clarify Cody API tests', function() {
     });
   });
 
+  describe('Utils tests', function() {
+
+    it('should convert keys to lowercase', function() {
+
+        var obj = {
+            'a': 'a',
+            'B': 'B',
+            'C': 'C',
+            'c': 'c'
+        };
+        var out = ClarifyCody.utils.objectPropertiesToLowerCase(obj);
+        expect(out.a).to.equal('a');
+        expect(out.B).to.not.be.ok();
+        expect(out.b).to.equal('B');
+        expect(out.C).to.not.be.ok();
+        expect(out.c).to.be.ok(); // could be 'c' or 'C' depending on ordering
+    });
+  });
 });
