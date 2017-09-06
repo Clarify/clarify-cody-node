@@ -173,7 +173,7 @@ describe('Clarify Cody API tests', function() {
 
         client.getConversations((err, result) => {
             client.getLinkItem(result, 0 , (err, result) => {
-                var insightHref = ClarifyCody.utils.getLinkHref(result, 'insight:media');
+                var insightHref = client.utils.getLinkHref(result, 'insight:media');
 
                 client.getLink(result, 'insight:media', (err, result) => {
                     expect(err).to.not.be.ok();
@@ -246,5 +246,6 @@ describe('Clarify Cody API tests', function() {
         expect(out.C).to.not.be.ok();
         expect(out.c).to.be.ok(); // could be 'c' or 'C' depending on ordering
     });
+
   });
 });
