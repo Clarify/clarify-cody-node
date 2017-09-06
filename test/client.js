@@ -23,7 +23,8 @@ describe('Clarify Cody API tests', function() {
         var obj = new ClarifyCody.Client('foobar', opts);
         expect(obj).to.be.an('object');
         expect(obj.baseUrl).to.equal(opts.baseUrl);
-        expect(obj.headers['user-agent']).to.equal(opts.headers['User-Agent']); // lowecased and set properly
+        // lowecased and set properly
+        expect(obj.headers['user-agent'].indexOf(opts.headers['User-Agent'])).to.equal(0);
     });
 
     it('should list conversations', function(done) {
