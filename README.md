@@ -47,7 +47,16 @@ var data = {
             }]
         }
     ],
-    notify_url: "http://example.org/conversation_ready"
+    notify_url: "http://example.org/conversation_ready",
+    options: {
+        asr: {
+            language: "en",
+            redact: "pci"
+        },
+        keywords: {
+            model: ""
+        }
+    }
 };
 
 client.createConversation(data, (err, result) => {
