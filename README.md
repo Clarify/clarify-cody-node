@@ -3,7 +3,7 @@ A node client library for Clarify Conversation Dynamics API.
 
 This module provides a thin layer to make using the API very simple. The results are always plain objects as deserialized from the JSON.
 
-See the Conversation Dynamics API docs for information on all the API calls, the parameters, and the response content.
+See the [Conversation Dynamics API docs](http://cody.clarify.io/) for information on all the API calls, the parameters, and the response content.
 
 Getting Started
 ---------------
