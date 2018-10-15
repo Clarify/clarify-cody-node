@@ -1,0 +1,326 @@
+<html lang="en">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <style type="text/css">
+        @charset "UTF-8";
+
+    </style>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js" type="text/javascript"></script>
+    <script src="http://cdnjs.cloudflare.com/ajax/libs/wavesurfer.js/1.4.0/wavesurfer.min.js"></script>
+
+</head>
+<body>
+
+    <h1>WaveSurfer Transcript Demo</h1>
+  <div style="padding: 20px; font-size: 14pt;">
+
+    <p>
+      Sample WaveSurfer using a transcript to generate the waveform so the waveform
+      is rendered without the audio file being downloaded.
+      <pre>
+	  var peaks = transcriptToWaveform(sampleTranscript);
+	  wavesurfer.load('audio.wav', peaks);
+      </pre>
+
+      From transcript insight data, merge the transcript for each participant using
+      transcript merge function (found elsewhere), and pass the merged transcript to <code>transcriptToWaveform()</code>.
+    </p>
+    <p>
+      Also uses the <code>backend: 'MediaElement'</code> WaveSurfer setting so audio can start playing
+      without fully downloading.
+
+      <pre>
+        var wavesurfer = WaveSurfer.create({
+           container: '#waveform',
+           backend: 'MediaElement',
+           ...
+        });
+      </pre>
+    </p>
+
+    <div id="waveform"></div>
+
+    <button id="play-button">Play</button>
+
+  </div>
+
+
+  <script>
+    // transcript is JSON transcript. It should be the merged transcript from a transcript insight.
+    transcriptToWaveform = function(transcript, duration) {
+
+	var peaks = [];
+	var currentTime = 0;
+	var incTime = 0.1;  // 10 samples per second
+
+	var segs = transcript.segments;
+	var slen = segs.length;
+	for (var s=0; s < slen; s++) {
+	    var seg = segs[s];
+	    var terms = seg.terms;
+	    var tlen = terms.length;
+	    for (var t=0; t < tlen; t++) {
+		var term = terms[t];
+		var start = term.start;
+   	        var end = start + term.dur;
+		while (currentTime + incTime < start) {
+		    peaks.push(0);
+		    currentTime += incTime;
+		}
+		while (currentTime < end) {
+		    peaks.push(Math.log(Math.abs(term.energy) + 2));
+                    currentTime += incTime;
+		}
+	    }
+        }
+        if (duration) {
+	    while (currentTime < duration) {
+	        peaks.push(0);
+	        currentTime += incTime;
+	    }
+	}
+        return peaks;
+    };
+  </script>
+
+  <script>
+
+  // Page test
+  $(function () {
+
+    var wavesurfer = WaveSurfer.create({
+        container: '#waveform',
+        backend: 'MediaElement',
+
+        height: 74,
+        barWidth: 2,
+        normalize: true,
+        // interact: false,
+        cursorWidth: 0,
+        wavecolor: '#87868A',
+        renderer: 'MultiCanvas',
+        responsive: false,
+        pixelRatio: 1,
+        minPxPerSec: 1
+    });
+
+    var audioUrl = 'http://media.clarify.io/audio/samples/harvard-sentences-1.wav';
+
+    var peaks = transcriptToWaveform(sampleTranscript, 23);
+    wavesurfer.load(audioUrl, peaks);
+
+    playing = false;
+    $('#play-button').on('click', function() {
+      playing = !playing;
+
+      // Start Playing
+      if (playing) {
+        wavesurfer.play();
+
+        // Stop Playback
+      } else {
+        wavesurfer.pause();
+      }
+    });
+
+  });
+
+  var sampleTranscript = {
+                "meta": {
+                    "format": "clarify_transcript",
+                    "version": 1
+                },
+                "segments": [
+                    {
+                        "language": "en",
+                        "terms": [
+                            {
+                                "term": "Hi",
+                                "energy": -2.465,
+                                "start": 0.81,
+                                "dur": 0.48
+                            },
+                            {
+                                "term": "is",
+                                "energy": -2.89,
+                                "start": 1.29,
+                                "dur": 0.18
+                            },
+                            {
+                                "term": "this",
+                                "energy": -0.947,
+                                "start": 1.47,
+                                "dur": 0.36
+                            },
+                            {
+                                "term": "you",
+                                "energy": -4.848,
+                                "start": 1.83,
+                                "dur": 0.27
+                            },
+                            {
+                                "term": ".",
+                                "type": "mark",
+                                "start": 2.1,
+                                "dur": 0
+                            }
+                        ],
+                        "energy": -2.572,
+                        "start": 0.81,
+                        "dur": 1.29
+                    },
+                    {
+                        "language": "en",
+                        "terms": [
+                            {
+                                "term": "I'm",
+                                "energy": -2.228,
+                                "start": 7.68,
+                                "dur": 0.69
+                            },
+                            {
+                                "term": "calling",
+                                "energy": -8.028,
+                                "start": 8.7,
+                                "dur": 0.57
+                            },
+                            {
+                                "term": "about",
+                                "energy": -3.366,
+                                "start": 9.39,
+                                "dur": 0.66
+                            },
+                            {
+                                "term": "your",
+                                "energy": -5.506,
+                                "start": 10.11,
+                                "dur": 0.54
+                            },
+                            {
+                                "term": "product",
+                                "energy": -1.932,
+                                "start": 10.71,
+                                "dur": 0.54
+                            },
+                            {
+                                "term": "that",
+                                "energy": -20.568,
+                                "start": 11.28,
+                                "dur": 0.06
+                            },
+                            {
+                                "term": "I",
+                                "energy": -3.3,
+                                "start": 11.37,
+                                "dur": 0.57
+                            },
+                            {
+                                "term": "read",
+                                "energy": -3.134,
+                                "start": 11.97,
+                                "dur": 0.57
+                            },
+                            {
+                                "term": "about",
+                                "energy": -5.503,
+                                "start": 12.63,
+                                "dur": 0.54
+                            },
+                            {
+                                "term": "in",
+                                "energy": -3.259,
+                                "start": 13.26,
+                                "dur": 0.66
+                            },
+                            {
+                                "term": "your",
+                                "energy": -3.076,
+                                "start": 14.01,
+                                "dur": 0.24
+                            },
+                            {
+                                "term": "blog",
+                                "energy": -1.458,
+                                "start": 14.25,
+                                "dur": 0.33
+                            },
+                            {
+                                "term": ".",
+                                "type": "mark",
+                                "start": 14.58,
+                                "dur": 0
+                            }
+                        ],
+                        "energy": -3.651,
+                        "start": 7.68,
+                        "dur": 6.9
+                    },
+                    {
+                        "language": "en",
+                        "terms": [
+                            {
+                                "term": "Can",
+                                "energy": -0.703,
+                                "start": 18.84,
+                                "dur": 0.21
+                            },
+                            {
+                                "term": "you",
+                                "energy": -0.505,
+                                "start": 19.05,
+                                "dur": 0.18
+                            },
+                            {
+                                "term": "give",
+                                "energy": -0.607,
+                                "start": 19.23,
+                                "dur": 0.27
+                            },
+                            {
+                                "term": "me",
+                                "energy": -1.493,
+                                "start": 19.5,
+                                "dur": 0.12
+                            },
+                            {
+                                "term": "more",
+                                "energy": -3.516,
+                                "start": 19.62,
+                                "dur": 0.45
+                            },
+                            {
+                                "term": "information",
+                                "energy": -1.641,
+                                "start": 20.07,
+                                "dur": 0.21
+                            },
+                            {
+                                "term": "on",
+                                "energy": -2.32,
+                                "start": 20.28,
+                                "dur": 0.09
+                            },
+                            {
+                                "term": "it",
+                                "energy": -5.317,
+                                "start": 20.37,
+                                "dur": 0.72
+                            },
+                            {
+                                "term": ".",
+                                "type": "mark",
+                                "start": 21.09,
+                                "dur": 0
+                            }
+                        ],
+                        "energy": -1.764,
+                        "start": 18.84,
+                        "dur": 2.25
+                    }
+                ]
+            };
+
+  </script>
+
+</body>
+</html>
