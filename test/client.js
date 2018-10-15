@@ -227,6 +227,30 @@ describe('Clarify Cody API tests', function() {
             done();
         });
     });
+
+    it('should admin conversations usage', function(done) {
+        Mocks.mockServer();
+        var start = "2018-01-01T00:00:00Z";
+        var end = "2018-07-01T00:00:00Z";
+
+        client.adminConversationsUsage(start, end, (err, result) => {
+            expect(err).to.not.be.ok();
+            expect(result.count).to.equal(5);
+            expect(result.total).to.equal(50);
+            done();
+        });
+    });
+
+    it('should admin conversations usage aggregate', function(done) {
+        Mocks.mockServer();
+        client.adminConversationsUsageAggregate(0, (err, result) => {
+            expect(err).to.not.be.ok();
+            expect(result.days).to.equal(2);
+            expect(result.conversations).to.equal(10);
+            done();
+        });
+    });
+
   });
 
   describe('Utils tests', function() {
