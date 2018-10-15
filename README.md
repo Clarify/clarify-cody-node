@@ -177,8 +177,8 @@ Get conversation processing usage:
 
 ```
 client.adminConversationsUsage("2018-01-01T00:00:00Z", "2018-07-01T00:00:00Z", (err, result) => {
-    // result.total = number of seconds of media processed
-    // result.count = number of conversations processed
+    // result.seconds = number of seconds of media processed
+    // result.conversations = number of conversations processed
 });
 ```
 
