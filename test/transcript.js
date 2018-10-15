@@ -31,13 +31,13 @@ describe('Clarify Cody transcript tests', function() {
 
         var textMerged = ClarifyCody.transcript.textForTranscript(transcript);
         console.log(textMerged);
-        expect(textMerged.length).to.equal(168);
+        expect(textMerged.length).to.equal(167);
         expect(textMerged.indexOf('John Doe: Hello')).to.equal(0);
 
         var htmlMerged = ClarifyCody.transcript.textForTranscript(transcript, true);
         console.log(htmlMerged);
         expect(htmlMerged.length).to.equal(282);
-        expect(htmlMerged.indexOf('<b>John Doe:</b> Hello')).to.equal(8);
+        expect(htmlMerged.indexOf('<b>John Doe:</b> Hello')).to.equal(9);
     });
 
   });

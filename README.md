@@ -160,18 +160,87 @@ Admin Commands
 Prune old conversations:
 
 ```
-client.adminConversationsPrune((err, total) => {
-    // total = number of conversations deleted
+client.adminConversationsPrune((err, result) => {
+    // result.total = number of conversations deleted
 });
 ```
 
 Resend notify webhook for conversations with notify_status:
 
 ```
-client.adminConversationsNotify('error', (err, total) => {
-    // total = number of conversations to resend notification
+client.adminConversationsNotify('error', (err, result) => {
+    // result.total = number of conversations to resend notification
 });
 ```
+
+Get conversation processing usage:
+
+```
+client.adminConversationsUsage("2018-01-01T00:00:00Z", "2018-07-01T00:00:00Z", (err, result) => {
+    // result.total = number of seconds of media processed
+    // result.count = number of conversations processed
+});
+```
+
+Aggregate conversation usage records by day to save database space:
+
+```
+client.adminConversationsUsageAggregate(30, (err, result) => {
+    // result.days = number of days aggregated
+    // result.conversations = total number of conversations aggregated
+});
+```
+
+Transcripts
+-----------
+
+There are some functions useful for manipulating transcripts.
+
+To get a merged transcript from a transcript insight object:
+
+```
+const ClarifyCody = require('clarify-cody');
+let transcript = ClarifyCody.transcript.transcriptForInsight(insight);
+```
+
+To get readable text for a transcript:
+
+```
+text = ClarifyCody.transcript.textForTranscript(transcript);
+```
+
+Or with simple HTML formatting:
+
+```
+text = ClarifyCody.transcript.textForTranscript(transcript, true);
+```
+
+To do your own formatting of transcript text, you can use a builder:
+
+```
+   let builder = {
+      _text: '',
+      line: '',
+      lineStart: function () {
+      },
+      lineEnd: function () {
+        this._text += this.line + '\n';
+        this.line = '';
+      },
+      speakerChange: function (speaker) {
+        this.line += speaker + ': ';
+      },
+      addWord: function (word, term) {
+        this.line += word;
+      },
+      text: function () {
+        return this._text;
+      }
+    };
+  }
+  text = ClarifyCody.transcript.textForTranscriptWithBuilder(transcript, builder);
+```
+
 
 Errors
 ------

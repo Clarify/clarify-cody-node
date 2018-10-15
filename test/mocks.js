@@ -195,6 +195,26 @@ exports.adminConversationsNotify = {
   "total": 1
 };
 
+exports.adminConversationsUsage = {
+  "_links": {
+    "self": {
+      "href": "/v1/admin/conversations/usage"
+    }
+  },
+  "count": 5,
+  "total": 50
+};
+
+exports.adminConversationsUsageAggregate = {
+  "_links": {
+    "self": {
+      "href": "/v1/admin/conversations/usage/aggregate"
+    }
+  },
+  "days": 2,
+  "conversations": 10
+};
+
 const media_insight_template = {
   "_links": {
     "self": {
@@ -310,6 +330,10 @@ exports.mockServer = function(noClean) {
     Nock(baseUrl).post('/v1/admin/conversations/prune').reply(200, exports.adminConversationsPrune);
     Nock(baseUrl).post('/v1/admin/conversations/notify', {notify_status:'error'}).reply(200, exports.adminConversationsNotify);
 
+    var start = "2018-01-01T00:00:00Z";
+    var end = "2018-07-01T00:00:00Z";
+    Nock(baseUrl).get('/v1/admin/conversations/usage').query({start: start, end: end}).reply(200, exports.adminConversationsUsage);
+    Nock(baseUrl).post('/v1/admin/conversations/usage/aggregate', {days_ago: 0}).reply(200, exports.adminConversationsUsageAggregate);
 };
 
 
