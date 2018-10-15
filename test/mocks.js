@@ -201,8 +201,8 @@ exports.adminConversationsUsage = {
       "href": "/v1/admin/conversations/usage"
     }
   },
-  "count": 5,
-  "total": 50
+  "conversations": 5,
+  "seconds": 50
 };
 
 exports.adminConversationsUsageAggregate = {

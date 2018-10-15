@@ -235,8 +235,8 @@ describe('Clarify Cody API tests', function() {
 
         client.adminConversationsUsage(start, end, (err, result) => {
             expect(err).to.not.be.ok();
-            expect(result.count).to.equal(5);
-            expect(result.total).to.equal(50);
+            expect(result.conversations).to.equal(5);
+            expect(result.seconds).to.equal(50);
             done();
         });
     });
