@@ -248,6 +248,17 @@ Errors
 The API uses HTTP status codes for all errors and sends back a JSON response with details. These errors are wrapped in a `ClarifyCodyError` object and passed as the first parameter to callbacks. Use `error.content` to get parsed the response JSON for an error. Other errors, for example connection errors, will be native Node or `request` module errors.
 
 
+Extras
+------
+
+See the `extras` folder for extra tools and sample code:
+
+- `pci-data` - Redact an audio file using the pci-data insight.
+
+- `search` - Search a transcript for words and phrases to find hits and annotate the transcript.
+
+- `wavesurfer` - Use transcript data to quickly generate simple waveform data that can be used with the wavesurfer audio player.
+
 
 License
 -------
