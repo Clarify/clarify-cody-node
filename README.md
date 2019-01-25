@@ -1,5 +1,5 @@
 # clarify-cody
-A node client library for Clarify Conversation Dynamics API.
+A node client library for Clarify Conversation Dynamics API for node >= 4.
 
 This module provides a thin layer to make using the API very simple. The results are always plain objects as deserialized from the JSON.
 
