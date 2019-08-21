@@ -191,8 +191,51 @@ client.adminConversationsUsageAggregate(30, (err, result) => {
 });
 ```
 
+Insight Data
+------------
+
+Sample insight JSON can be found in the folder `samples/insights`.
+
+
 Transcripts
 -----------
+
+Transcripts are in JSON format and describe the spoken words in order, along with other data. At the top level is a list of `segments`, each of which contains a list of `words`.
+
+
+### Transcript Word Fields
+
+The word fields are:
+
+#### Term (`term`)
+
+The text of the word or punctuation mark.
+
+#### Type (`type`)
+
+For normal words, type `word`, the type field is not present. If present, it will be `mark` for a punctuation mark, `non_lex` for non lexical sounds such as `[laugh]`, `[noise]`, or `[unknown]`, `semi_lex` for a semi lexical sound, `sound` for sounds such as a click, or `redacted` for a redacted word.
+
+#### Start time (`start`)
+
+A floating point specifying the number of seconds into the file when the word is spoken.
+
+
+#### Duration (`dur`)
+
+A floating point specifying the number of seconds in duration of the spoken word.
+
+#### Energy (`energy`)
+
+The relative loudness of a word, relative to the average for that speaker in the call. The values can be positive (louder than the average) or negative (quieter than the average.)
+
+#### Confidence Score (`conf`)
+
+The confidence score is a percentage (represented as a real number between 0 and 1) that specifies how well each word matches the ASR model. Although in many cases this confidence score is a good estimate for the probability that the word is "correct", this is not always the case.
+
+The model is built from a large corpus of general written and spoken language, as well as corpora closer to the actual target domain (ex. voicemail transcripts, call transcripts, domain or company-specific texts etc.) The goal is to get a good model of the speech found in real-world phone calls but how well the model actually represents any particular call is variable. If the speech in a phone call matches the model well, the confidence scores will be closer to the "correctness" probability and will generally be high (many with values of 1.) However, if there are words or phrases spoken that are unusual or not found in the model at all, then the confidence scores for those words will be lower, whether or not they are in fact "correct". For example, a product name, company name or technical term that is not commonly used in English but we have added to the model lexicon can be recognized correctly but since it is so unusual, the confidence score for it will be low. If an unusual or new word is spoken that is not in the model lexicon at all, the recognizer may come up with an incorrect word and, depending on how that word appears in the model, the incorrect word may in fact be given a high confidence score.
+
+
+### Transcript Utility Functions
 
 There are some functions useful for manipulating transcripts.
 
