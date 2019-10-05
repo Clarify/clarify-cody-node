@@ -232,7 +232,21 @@ The relative loudness of a word, relative to the average for that speaker in the
 
 The confidence score is a percentage (represented as a real number between 0 and 1) that specifies how well each word matches the ASR model. Although in many cases this confidence score is a good estimate for the probability that the word is "correct", this is not always the case.
 
-The model is built from a large corpus of general written and spoken language, as well as corpora closer to the actual target domain (ex. voicemail transcripts, call transcripts, domain or company-specific texts etc.) The goal is to get a good model of the speech found in real-world phone calls but how well the model actually represents any particular call is variable. If the speech in a phone call matches the model well, the confidence scores will be closer to the "correctness" probability and will generally be high (many with values of 1.) However, if there are words or phrases spoken that are unusual or not found in the model at all, then the confidence scores for those words will be lower, whether or not they are in fact "correct". For example, a product name, company name or technical term that is not commonly used in English but we have added to the model lexicon can be recognized correctly but since it is so unusual, the confidence score for it will be low. If an unusual or new word is spoken that is not in the model lexicon at all, the recognizer may come up with an incorrect word and, depending on how that word appears in the model, the incorrect word may in fact be given a high confidence score.
+The model is built from a large corpus of general written and spoken language, as well as corpora closer to the actual target domain (ex. voicemail transcripts, call transcripts, domain or company-specific texts etc.) The goal is to get a good model of the speech found in real-world phone calls but how well the model actually represents any particular call is variable. If the speech in a phone call matches the model well, the confidence scores will be closer to the "correctness" probability and confidence for clearly spoken words will generally be high (many with values of 1.) However, if there are words or phrases spoken that are unusual, sound like other words, or not found in the model at all, then the confidence scores for those words may be too high or too high, whether or not they are in fact "correct". For example, a product name, company name or technical term that is not commonly used in English (and that perhaps sounds like other words) but we have added to the model lexicon, could be recognized correctly but since the word is unusual and there are good other possibilities, the confidence score for it may be low. If an unusual or new word is spoken that is not in the model lexicon at all, the recognizer may come up with an incorrect word and, depending on how that word appears in the model and how many other close possibilities exist, the incorrect word may in fact be given a high confidence score.
+
+##### Confidence Score Math
+
+In speech recognition, alternative outputs or hypotheses are typically represented as a lattice. It is effectively an acyclic graph with unique begin and end nodes.
+
+When the decoding is performed using Minimum Bayes Risk (MBR), the word sequence is estimated as:
+
+```
+W* = argmin_w \sum_{w’} P(w’|X) L(w,w’)
+```
+
+In this implementation, the upper bound for Bayes Risk is minimized to find the most likely word sequence for the given n-best hypotheses in the lattice. In so doing a combination of Levenshtein distance and probability from acoustic observation is employed. This probability is computed using a forward-backward algorithm from the probabilities of traversing lattice arcs.
+
+The confidence scores are affected by the lattice. If there is only one path in the lattice at a certain point (only one word possibility), the confidence will be reported as 1. If there are many word possibilities, a lower confidence score may be reported.
 
 
 ### Transcript Utility Functions
