@@ -54,6 +54,22 @@
                 {
                    "type": "person",
                    "term": "Paul Jones"
+                },
+                {
+                   "type": "money",
+                   "term": "$25 million"
+                },
+                {
+                   "type": "date",
+                   "term": "January 2019"
+                },
+                {
+                   "type": "time",
+                   "term": "11:00 AM"
+                },
+                {
+                   "type": "loc",
+                   "term": "New York City"
                 }
 	    ],
             "name": "client"
