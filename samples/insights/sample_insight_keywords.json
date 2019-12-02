@@ -5,6 +5,7 @@
     "participants": [
         {
             "keywords": [],
+	    "entities": [],
             "name": "agent"
         },
         {
@@ -45,6 +46,16 @@
                     "count": 1
                 }
             ],
+	    "entities": [
+                {
+                    "type": "org",
+                    "term": "Acme"
+                },
+                {
+                   "type": "person",
+                   "term": "Paul Jones"
+                }
+	    ],
             "name": "client"
         }
     ]
